@@ -1,10 +1,14 @@
 const express = require("express");
 const router = express.Router();
+const upload = require("../middleware/upload");
 
 const {
-  getAllFromPublicacion,
+  getContenidoByIdPublicacion,
+  postContenido,
 } = require("../controllers/contenido.controller");
 
-router.get("/", getAllFromPublicacion);
+router.get("/:publicacion_id", getContenidoByIdPublicacion);
+
+router.post("/", upload.single("archivo"), postContenido);
 
 module.exports = router;

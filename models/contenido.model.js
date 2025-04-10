@@ -14,14 +14,26 @@ class Contenido {
   }
 
   static fromRow(row) {
-    return new Obra(row.id, row.tipoContenido, row.publicacion_id);
+    return new Contenido(row.id, row.tipoContenido, row.publicacion_id);
   }
 
   static async getAllFromPublicacion(publicacion_id) {
     const query = "SELECT * FROM contenido WHERE publicacion_id = ?";
     const params = [publicacion_id];
-    const rows = await db.query(query);
+    const [rows] = await db.query(query, params);
     return rows.map(Contenido.fromRow);
+  }
+
+  static async saveInfo(contenido) {
+    const query =
+      "INSERT INTO contenido (id, tipoContenido, publicacion_id) VALUES (?, ?, ?)";
+    const params = [
+      contenido.id,
+      contenido.tipoContenido,
+      contenido.publicacion_id,
+    ];
+    await db.query(query, params);
+    return contenido;
   }
 }
 
